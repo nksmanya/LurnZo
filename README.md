@@ -1,6 +1,6 @@
 # LurnZo – AI-Powered Learning Platform
 
-A comprehensive, gamified learning platform built with Flask that provides AI assistance, structured courses, coding challenges, resume analysis, and interview preparation - all designed like Coursera.
+A comprehensive, gamified learning platform built with Flask that provides AI assistance, structured courses, coding challenges, resume analysis, and interview preparation.
 
 ## 🚀 Features
 
@@ -17,7 +17,6 @@ A comprehensive, gamified learning platform built with Flask that provides AI as
 - **Profile Dashboard** - Track achievements, streaks, and learning statistics
 
 ### Technical Features
-- **TF-IDF Q&A Engine** - Smart question answering with subject-aware ranking
 - **Code Execution** - Run and test code submissions in multiple languages
 - **Responsive Design** - Modern, mobile-friendly UI with dark/light themes
 - **Real-time Updates** - Live progress tracking and instant feedback
@@ -26,9 +25,6 @@ A comprehensive, gamified learning platform built with Flask that provides AI as
 
 - **Backend**: Flask (Python)
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **AI/NLP**: scikit-learn, TF-IDF, cosine similarity
-- **Styling**: Custom CSS with CSS Grid/Flexbox
-- **Database**: JSON-based storage (easily upgradable to SQL/NoSQL)
 
 ## 📁 Project Structure
 
@@ -61,46 +57,6 @@ lur/
     └── qa_dataset.json # Q&A knowledge base
 ```
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8+
-- pip package manager
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd lur
-   ```
-
-2. **Create virtual environment**
-   ```bash
-   # Windows
-   python -m venv .venv
-   .\.venv\Scripts\activate
-   
-   # macOS/Linux
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application**
-   ```bash
-   python app.py
-   ```
-
-5. **Open your browser**
-   Navigate to `http://localhost:5000`
-
-## 🎯 Usage Guide
-
 ### Getting Started
 1. **Homepage** - Explore features and chat with AI assistant
 2. **Courses** - Browse and enroll in structured learning paths
@@ -109,79 +65,12 @@ lur/
 5. **Interview** - Prepare for technical interviews
 6. **Profile** - Track your progress and achievements
 
-### AI Assistant
-- Ask any programming or learning question
-- Get instant, contextual answers
-- View source references and confidence scores
-
-### Learning Paths
-- **Beginner**: Python basics, web fundamentals
-- **Intermediate**: Data science, algorithms, system design
-- **Advanced**: Machine learning, advanced concepts
-
 ### Gamification
 - **Points System**: Earn points for completing lessons
 - **Leveling**: Progress through learning levels
 - **Achievements**: Unlock badges for milestones
 - **Streaks**: Maintain daily learning habits
 - **Leaderboard**: Compete with other learners
-
-## 🔧 Configuration
-
-### Environment Variables
-```bash
-# Optional: Set a secret key for production
-export SECRET_KEY="your-secret-key-here"
-
-# Optional: Set custom port
-export PORT=5000
-```
-
-### Customizing Content
-- **Courses**: Edit `services/course_manager.py`
-- **Q&A Database**: Modify `data/qa_dataset.json`
-- **Coding Challenges**: Update `services/coding_challenges.py`
-- **Interview Questions**: Edit `services/interview_prep.py`
-
-## 🚀 Deployment
-
-### Production Setup
-1. **Set environment variables**
-   ```bash
-   export FLASK_ENV=production
-   export SECRET_KEY="your-secure-secret-key"
-   ```
-
-2. **Use Gunicorn**
-   ```bash
-   pip install gunicorn
-   gunicorn -w 4 -b 0.0.0.0:8000 app:app
-   ```
-
-3. **Reverse Proxy** (Nginx example)
-   ```nginx
-   server {
-       listen 80;
-       server_name your-domain.com;
-       
-       location / {
-           proxy_pass http://127.0.0.1:8000;
-           proxy_set_header Host $host;
-           proxy_set_header X-Real-IP $remote_addr;
-       }
-   }
-   ```
-
-### Docker Deployment
-```dockerfile
-FROM python:3.9-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-EXPOSE 5000
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
-```
 
 ## 🔮 Future Enhancements
 
@@ -209,40 +98,12 @@ CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Development Setup
-```bash
-# Install development dependencies
-pip install -r requirements.txt
-
-# Run tests (when implemented)
-python -m pytest
-
-# Code formatting
-black .
-flake8 .
-```
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- **Flask Community** - For the excellent web framework
-- **scikit-learn** - For powerful machine learning capabilities
-- **Inter Font** - For beautiful typography
-- **Open Source Community** - For inspiration and tools
-
-## 📞 Support
-
-- **Documentation**: Check this README and inline code comments
-- **Issues**: Report bugs and feature requests via GitHub Issues
-- **Discussions**: Join community discussions on GitHub
-- **Email**: Contact the development team
-
----
-
-**Built with ❤️ for students and lifelong learners**
+**Built with ❤️ for students and lifelong learners by Manya**
 
 *Transform your learning journey with AI-powered assistance and gamified experiences.*
 
