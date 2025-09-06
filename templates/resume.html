@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resume Analyzer | LurnZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="app__header">
+        <div class="brand" role="banner" aria-label="LurnZo">
+          <div class="brand__logo" aria-hidden="true">🎓</div>
+          <div class="brand__text">
+            <h1 class="brand__title">LurnZo</h1>
+            <p class="brand__subtitle">AI-Powered Learning Platform</p>
+          </div>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/courses" class="nav-link">Courses</a>
+          <a href="/coding" class="nav-link">Coding</a>
+          <a href="/resume" class="nav-link active">Resume</a>
+          <a href="/interview" class="nav-link">Interview</a>
+          <a href="/profile" class="nav-link">Profile</a>
+        </nav>
+
+        <div class="toolbar" role="group" aria-label="Toolbar">
+          <button id="themeToggleBtn" class="btn btn--soft" title="Toggle theme" aria-label="Toggle theme">🌗</button>
+        </div>
+      </header>
+
+      <main class="resume-main">
+        <div class="resume-header">
+          <h1>Resume Analyzer</h1>
+          <p>Get AI-powered feedback on your resume to improve your job applications</p>
+        </div>
+
+        <div class="resume-container">
+          <div class="resume-input-section">
+            <div class="input-header">
+              <h2>Paste Your Resume</h2>
+              <p>Copy and paste your resume text below for instant analysis</p>
+            </div>
+            
+            <div class="resume-textarea-container">
+              <textarea 
+                id="resumeTextarea" 
+                class="resume-textarea" 
+                placeholder="Paste your resume content here...&#10;&#10;Example:&#10;John Doe&#10;Software Engineer&#10;john.doe@email.com&#10;(555) 123-4567&#10;&#10;SUMMARY&#10;Experienced software engineer with 5+ years in web development...&#10;&#10;EXPERIENCE&#10;Senior Developer - Tech Corp (2020-Present)&#10;• Developed full-stack web applications using React and Node.js&#10;• Led team of 5 developers on major project...&#10;&#10;EDUCATION&#10;Bachelor of Science in Computer Science - University of Tech (2019)&#10;&#10;SKILLS&#10;JavaScript, Python, React, Node.js, SQL, Git, AWS"
+                rows="20"
+              ></textarea>
+              
+              <div class="textarea-actions">
+                <button id="clearBtn" class="btn btn--soft">Clear</button>
+                <button id="analyzeBtn" class="btn btn--primary">Analyze Resume</button>
+              </div>
+            </div>
+
+            <div class="resume-tips">
+              <h3>💡 Tips for Better Results</h3>
+              <ul>
+                <li>Include all sections: Contact, Summary, Experience, Education, Skills</li>
+                <li>Use action verbs to describe your achievements</li>
+                <li>Add quantifiable results (e.g., "Increased performance by 25%")</li>
+                <li>List relevant technical skills and technologies</li>
+                <li>Keep descriptions concise but impactful</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="resume-analysis-section" id="analysisSection" style="display: none;">
+            <div class="analysis-header">
+              <h2>Resume Analysis Results</h2>
+              <div class="overall-score">
+                <div class="score-circle">
+                  <span class="score-number" id="overallScore">0</span>
+                  <span class="score-label">Overall Score</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="analysis-content">
+              <div class="analysis-sections">
+                <h3>Section Analysis</h3>
+                <div class="sections-grid" id="sectionsGrid">
+                  <!-- Section scores will be displayed here -->
+                </div>
+              </div>
+
+              <div class="analysis-details">
+                <div class="strengths-section">
+                  <h3>✅ Strengths</h3>
+                  <ul id="strengthsList">
+                    <!-- Strengths will be listed here -->
+                  </ul>
+                </div>
+
+                <div class="improvements-section">
+                  <h3>🔧 Areas for Improvement</h3>
+                  <ul id="improvementsList">
+                    <!-- Areas for improvement will be listed here -->
+                  </ul>
+                </div>
+
+                <div class="suggestions-section">
+                  <h3>💡 Suggestions</h3>
+                  <ul id="suggestionsList">
+                    <!-- Suggestions will be listed here -->
+                  </ul>
+                </div>
+
+                <div class="keywords-section">
+                  <h3>🔑 Technical Keywords Found</h3>
+                  <div class="keywords-tags" id="keywordsTags">
+                    <!-- Keywords will be displayed here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="analysis-actions">
+              <button id="newAnalysisBtn" class="btn btn--outline">Analyze Another Resume</button>
+              <button id="downloadReportBtn" class="btn btn--primary">Download Report</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app__footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>LurnZo</h4>
+            <p>AI-powered learning platform for students</p>
+          </div>
+          <div class="footer-section">
+            <h4>Features</h4>
+            <ul>
+              <li><a href="/courses">Courses</a></li>
+              <li><a href="/coding">Coding Challenges</a></li>
+              <li><a href="/resume">Resume Analyzer</a></li>
+              <li><a href="/interview">Interview Prep</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <small>&copy; 2025 LurnZo. Made with ❤️ for students.</small>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Resume analyzer functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const resumeTextarea = document.getElementById('resumeTextarea');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const analysisSection = document.getElementById('analysisSection');
+        const overallScore = document.getElementById('overallScore');
+        const sectionsGrid = document.getElementById('sectionsGrid');
+        const strengthsList = document.getElementById('strengthsList');
+        const improvementsList = document.getElementById('improvementsList');
+        const suggestionsList = document.getElementById('suggestionsList');
+        const keywordsTags = document.getElementById('keywordsTags');
+        const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+        const downloadReportBtn = document.getElementById('downloadReportBtn');
+
+        // Event listeners
+        analyzeBtn.addEventListener('click', analyzeResume);
+        clearBtn.addEventListener('click', clearResume);
+        newAnalysisBtn.addEventListener('click', showInputSection);
+        downloadReportBtn.addEventListener('click', downloadReport);
+
+        function clearResume() {
+          resumeTextarea.value = '';
+          resumeTextarea.focus();
+        }
+
+        function showInputSection() {
+          analysisSection.style.display = 'none';
+          document.querySelector('.resume-input-section').style.display = 'block';
+          clearResume();
+        }
+
+        async function analyzeResume() {
+          const resumeText = resumeTextarea.value.trim();
+          
+          if (!resumeText) {
+            alert('Please paste your resume content first.');
+            return;
+          }
+
+          try {
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = 'Analyzing...';
+            
+            const response = await fetch('/api/analyze-resume', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ resume_text: resumeText })
+            });
+            
+            const analysis = await response.json();
+            displayAnalysis(analysis);
+            
+          } catch (error) {
+            console.error('Error analyzing resume:', error);
+            alert('Error analyzing resume. Please try again.');
+          } finally {
+            analyzeBtn.disabled = false;
+            analyzeBtn.textContent = 'Analyze Resume';
+          }
+        }
+
+        function displayAnalysis(analysis) {
+          // Update overall score
+          overallScore.textContent = analysis.overall_score;
+          
+          // Update section scores
+          sectionsGrid.innerHTML = analysis.sections.map(section => `
+            <div class="section-score">
+              <div class="section-name">${section.name}</div>
+              <div class="section-score-bar">
+                <div class="score-fill" style="width: ${section.score}%"></div>
+              </div>
+              <div class="section-score-number">${Math.round(section.score)}%</div>
+            </div>
+          `).join('');
+          
+          // Update strengths
+          strengthsList.innerHTML = analysis.strengths.map(strength => 
+            `<li>${strength}</li>`
+          ).join('');
+          
+          // Update areas for improvement
+          improvementsList.innerHTML = analysis.areas_for_improvement.map(area => 
+            `<li>${area}</li>`
+          ).join('');
+          
+          // Update suggestions
+          suggestionsList.innerHTML = analysis.suggestions.map(suggestion => 
+            `<li>${suggestion}</li>`
+          ).join('');
+          
+          // Update keywords
+          keywordsTags.innerHTML = analysis.keyword_matches.map(keyword => 
+            `<span class="keyword-tag">${keyword}</span>`
+          ).join('');
+          
+          // Show analysis section
+          analysisSection.style.display = 'block';
+          document.querySelector('.resume-input-section').style.display = 'none';
+        }
+
+        function downloadReport() {
+          // Create a simple text report
+          const report = generateReport();
+          const blob = new Blob([report], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'resume-analysis-report.txt';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+
+        function generateReport() {
+          const score = overallScore.textContent;
+          const sections = Array.from(sectionsGrid.children).map(section => {
+            const name = section.querySelector('.section-name').textContent;
+            const score = section.querySelector('.section-score-number').textContent;
+            return `${name}: ${score}`;
+          }).join('\n');
+          
+          const strengths = Array.from(strengthsList.children).map(li => li.textContent).join('\n');
+          const improvements = Array.from(improvementsList.children).map(li => li.textContent).join('\n');
+          const suggestions = Array.from(suggestionsList.children).map(li => li.textContent).join('\n');
+          const keywords = Array.from(keywordsTags.children).map(span => span.textContent).join(', ');
+          
+          return `LURNZO RESUME ANALYSIS REPORT
+=====================================
+
+OVERALL SCORE: ${score}%
+
+SECTION SCORES:
+${sections}
+
+STRENGTHS:
+${strengths}
+
+AREAS FOR IMPROVEMENT:
+${improvements}
+
+SUGGESTIONS:
+${suggestions}
+
+TECHNICAL KEYWORDS FOUND:
+${keywords}
+
+Generated on: ${new Date().toLocaleDateString()}
+Platform: LurnZo AI-Powered Learning Platform
+`;
+        }
+      });
+    </script>
+  </body>
+</html>
+

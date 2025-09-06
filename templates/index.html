@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LurnZo | AI-Powered Learning Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="app__header">
+        <div class="brand" role="banner" aria-label="LurnZo">
+          <div class="brand__logo" aria-hidden="true">🎓</div>
+          <div class="brand__text">
+            <h1 class="brand__title">LurnZo</h1>
+            <p class="brand__subtitle">AI-Powered Learning Platform</p>
+          </div>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <a href="/" class="nav-link active">Home</a>
+          <a href="/courses" class="nav-link">Courses</a>
+          <a href="/coding" class="nav-link">Coding</a>
+          <a href="/resume" class="nav-link">Resume</a>
+          <a href="/interview" class="nav-link">Interview</a>
+          <a href="/profile" class="nav-link">Profile</a>
+        </nav>
+
+        <div class="toolbar" role="group" aria-label="Toolbar">
+          <button id="themeToggleBtn" class="btn btn--soft" title="Toggle theme" aria-label="Toggle theme">🌗</button>
+        </div>
+      </header>
+
+      <main class="hero-section">
+        <div class="hero-content">
+          <h2 class="hero-title">Master New Skills with AI-Powered Learning</h2>
+          <p class="hero-subtitle">Join thousands of students learning programming, data science, and more with personalized AI assistance</p>
+          
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-number">50+</span>
+              <span class="stat-label">Courses</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">100+</span>
+              <span class="stat-label">Coding Challenges</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">1000+</span>
+              <span class="stat-label">Students</span>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="/courses" class="btn btn--primary">Explore Courses</a>
+            <a href="/coding" class="btn btn--outline">Start Coding</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="floating-card card-1">
+            <div class="card-icon">🚀</div>
+            <h3>AI Assistant</h3>
+            <p>Get instant help with your questions</p>
+          </div>
+          <div class="floating-card card-2">
+            <div class="card-icon">💻</div>
+            <h3>Code Practice</h3>
+            <p>Solve real coding challenges</p>
+          </div>
+          <div class="floating-card card-3">
+            <div class="card-icon">📚</div>
+            <h3>Structured Learning</h3>
+            <p>Follow curated learning paths</p>
+          </div>
+        </div>
+      </main>
+
+      <section class="features-section">
+        <h2 class="section-title">Why Choose LurnZo?</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Personalized Learning</h3>
+            <p>AI adapts to your learning style and pace</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🏆</div>
+            <h3>Gamified Experience</h3>
+            <p>Earn points, badges, and level up as you learn</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>AI-Powered Support</h3>
+            <p>Get instant answers and explanations</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Learn Anywhere</h3>
+            <p>Access your courses on any device</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="ai-chat-section">
+        <div class="chat-container">
+          <div class="chat-header">
+            <h3>Ask Our AI Assistant</h3>
+            <p>Get help with any programming or learning question</p>
+          </div>
+          
+          <div class="chat-interface">
+            <div id="messages" class="messages" role="list" aria-label="Conversation"></div>
+            
+            <form id="composer" class="composer" autocomplete="off" novalidate>
+              <input id="questionInput" class="composer__input" name="question" placeholder="Ask your question..." />
+              <button id="sendBtn" class="btn btn--primary" type="submit" aria-label="Send">Send</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer class="app__footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>LurnZo</h4>
+            <p>AI-powered learning platform for students</p>
+          </div>
+          <div class="footer-section">
+            <h4>Features</h4>
+            <ul>
+              <li><a href="/courses">Courses</a></li>
+              <li><a href="/coding">Coding Challenges</a></li>
+              <li><a href="/resume">Resume Analyzer</a></li>
+              <li><a href="/interview">Interview Prep</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <small>&copy; 2025 LurnZo. Made with ❤️ for students.</small>
+        </div>
+      </footer>
+    </div>
+
+    <template id="messageTemplate">
+      <div class="message">
+        <div class="message__avatar" aria-hidden="true"></div>
+        <div class="message__bubble">
+          <div class="message__content"></div>
+        </div>
+      </div>
+    </template>
+
+    <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>
+
+

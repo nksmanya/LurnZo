@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Coding Challenges | LurnZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="app__header">
+        <div class="brand" role="banner" aria-label="LurnZo">
+          <div class="brand__logo" aria-hidden="true">🎓</div>
+          <div class="brand__text">
+            <h1 class="brand__title">LurnZo</h1>
+            <p class="brand__subtitle">AI-Powered Learning Platform</p>
+          </div>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/courses" class="nav-link">Courses</a>
+          <a href="/coding" class="nav-link active">Coding</a>
+          <a href="/resume" class="nav-link">Resume</a>
+          <a href="/interview" class="nav-link">Interview</a>
+          <a href="/profile" class="nav-link">Profile</a>
+        </nav>
+
+        <div class="toolbar" role="group" aria-label="Toolbar">
+          <button id="themeToggleBtn" class="btn btn--soft" title="Toggle theme" aria-label="Toggle theme">🌗</button>
+        </div>
+      </header>
+
+      <main class="coding-main">
+        <div class="coding-header">
+          <h1>Coding Challenges</h1>
+          <p>Practice your programming skills with real coding problems</p>
+        </div>
+
+        <div class="coding-container">
+          <div class="challenges-sidebar">
+            <div class="challenges-filters">
+              <select id="difficultyFilter" class="filter-select">
+                <option value="">All Difficulties</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+
+              <select id="categoryFilter" class="filter-select">
+                <option value="">All Categories</option>
+                <option value="strings">Strings</option>
+                <option value="arrays">Arrays</option>
+                <option value="recursion">Recursion</option>
+                <option value="algorithms">Algorithms</option>
+              </select>
+            </div>
+
+            <div class="challenges-list" id="challengesList">
+              <!-- Challenges will be loaded here -->
+            </div>
+          </div>
+
+          <div class="coding-workspace">
+            <div class="problem-description" id="problemDescription">
+              <div class="problem-header">
+                <h2 id="problemTitle">Select a Challenge</h2>
+                <div class="problem-meta">
+                  <span class="difficulty-badge" id="difficultyBadge">-</span>
+                  <span class="category-badge" id="categoryBadge">-</span>
+                </div>
+              </div>
+              
+              <div class="problem-content" id="problemContent">
+                <p>Choose a coding challenge from the sidebar to get started.</p>
+              </div>
+
+              <div class="problem-examples" id="problemExamples">
+                <!-- Examples will be loaded here -->
+              </div>
+            </div>
+
+            <div class="code-editor-section">
+              <div class="editor-header">
+                <div class="language-selector">
+                  <label for="languageSelect">Language:</label>
+                  <select id="languageSelect" class="language-select">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="java">Java</option>
+                  </select>
+                </div>
+                
+                <div class="editor-actions">
+                  <button id="runCodeBtn" class="btn btn--primary" disabled>Run Code</button>
+                  <button id="submitCodeBtn" class="btn btn--success" disabled>Submit</button>
+                  <button id="resetCodeBtn" class="btn btn--soft">Reset</button>
+                </div>
+              </div>
+
+              <div class="code-editor">
+                <textarea id="codeEditor" placeholder="Write your code here..." class="code-textarea"></textarea>
+              </div>
+            </div>
+
+            <div class="test-results" id="testResults" style="display: none;">
+              <div class="results-header">
+                <h3>Test Results</h3>
+                <div class="results-summary" id="resultsSummary">
+                  <!-- Results summary will be shown here -->
+                </div>
+              </div>
+              
+              <div class="test-cases" id="testCases">
+                <!-- Individual test case results will be shown here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app__footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>LurnZo</h4>
+            <p>AI-powered learning platform for students</p>
+          </div>
+          <div class="footer-section">
+            <h4>Features</h4>
+            <ul>
+              <li><a href="/courses">Courses</a></li>
+              <li><a href="/coding">Coding Challenges</a></li>
+              <li><a href="/resume">Resume Analyzer</a></li>
+              <li><a href="/interview">Interview Prep</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <small>&copy; 2025 LurnZo. Made with ❤️ for students.</small>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Coding challenges page functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const challengesList = document.getElementById('challengesList');
+        const difficultyFilter = document.getElementById('difficultyFilter');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const languageSelect = document.getElementById('languageSelect');
+        const codeEditor = document.getElementById('codeEditor');
+        const runCodeBtn = document.getElementById('runCodeBtn');
+        const submitCodeBtn = document.getElementById('submitCodeBtn');
+        const resetCodeBtn = document.getElementById('resetCodeBtn');
+        const problemTitle = document.getElementById('problemTitle');
+        const problemContent = document.getElementById('problemContent');
+        const problemExamples = document.getElementById('problemExamples');
+        const difficultyBadge = document.getElementById('difficultyBadge');
+        const categoryBadge = document.getElementById('categoryBadge');
+        const testResults = document.getElementById('testResults');
+        const resultsSummary = document.getElementById('resultsSummary');
+        const testCases = document.getElementById('testCases');
+
+        let allChallenges = [];
+        let currentChallenge = null;
+        let starterCode = {};
+
+        // Load challenges on page load
+        loadChallenges();
+
+        // Event listeners
+        difficultyFilter.addEventListener('change', filterChallenges);
+        categoryFilter.addEventListener('change', filterChallenges);
+        languageSelect.addEventListener('change', updateStarterCode);
+        runCodeBtn.addEventListener('click', runCode);
+        submitCodeBtn.addEventListener('click', submitCode);
+        resetCodeBtn.addEventListener('click', resetCode);
+
+        async function loadChallenges() {
+          try {
+            const response = await fetch('/api/challenges');
+            const challenges = await response.json();
+            
+            allChallenges = challenges;
+            renderChallenges(challenges);
+          } catch (error) {
+            console.error('Error loading challenges:', error);
+            challengesList.innerHTML = '<p class="error">Error loading challenges. Please try again.</p>';
+          }
+        }
+
+        function filterChallenges() {
+          const difficulty = difficultyFilter.value;
+          const category = categoryFilter.value;
+
+          const filtered = allChallenges.filter(challenge => {
+            const matchesDifficulty = !difficulty || challenge.difficulty === difficulty;
+            const matchesCategory = !category || challenge.category === category;
+            return matchesDifficulty && matchesCategory;
+          });
+
+          renderChallenges(filtered);
+        }
+
+        function renderChallenges(challenges) {
+          challengesList.innerHTML = challenges.map(challenge => `
+            <div class="challenge-item ${currentChallenge?.id === challenge.id ? 'active' : ''}" 
+                 onclick="selectChallenge('${challenge.id}')">
+              <div class="challenge-header">
+                <h4>${challenge.title}</h4>
+                <span class="challenge-difficulty ${challenge.difficulty}">${challenge.difficulty}</span>
+              </div>
+              <p class="challenge-description">${challenge.description}</p>
+              <div class="challenge-category">${challenge.category}</div>
+            </div>
+          `).join('');
+        }
+
+        // Global function for challenge selection
+        window.selectChallenge = async function(challengeId) {
+          try {
+            // Get full challenge details
+            const response = await fetch(`/api/challenges/${challengeId}`);
+            const challenge = await response.json();
+            
+            currentChallenge = challenge;
+            starterCode = challenge.starter_code;
+            
+            // Update UI
+            problemTitle.textContent = challenge.title;
+            problemContent.innerHTML = `<p>${challenge.problem_statement}</p>`;
+            difficultyBadge.textContent = challenge.difficulty;
+            categoryBadge.textContent = challenge.category;
+            
+            // Update examples
+            problemExamples.innerHTML = challenge.examples.map(example => `
+              <div class="example">
+                <h4>Example:</h4>
+                <div class="example-io">
+                  <div><strong>Input:</strong> <code>${example.input}</code></div>
+                  <div><strong>Output:</strong> <code>${example.output}</code></div>
+                </div>
+              </div>
+            `).join('');
+            
+            // Update starter code
+            updateStarterCode();
+            
+            // Enable buttons
+            runCodeBtn.disabled = false;
+            submitCodeBtn.disabled = false;
+            
+            // Update active challenge in list
+            renderChallenges(allChallenges);
+            
+            // Hide test results
+            testResults.style.display = 'none';
+            
+          } catch (error) {
+            console.error('Error loading challenge:', error);
+            alert('Error loading challenge. Please try again.');
+          }
+        };
+
+        function updateStarterCode() {
+          const language = languageSelect.value;
+          if (currentChallenge && starterCode[language]) {
+            codeEditor.value = starterCode[language];
+          }
+        }
+
+        async function runCode() {
+          if (!currentChallenge) return;
+          
+          const code = codeEditor.value;
+          const language = languageSelect.value;
+          
+          try {
+            runCodeBtn.disabled = true;
+            runCodeBtn.textContent = 'Running...';
+            
+            const response = await fetch('/api/submit-challenge', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                challenge_id: currentChallenge.id,
+                code: code,
+                language: language
+              })
+            });
+            
+            const result = await response.json();
+            displayResults(result);
+            
+          } catch (error) {
+            console.error('Error running code:', error);
+            alert('Error running code. Please try again.');
+          } finally {
+            runCodeBtn.disabled = false;
+            runCodeBtn.textContent = 'Run Code';
+          }
+        }
+
+        async function submitCode() {
+          // Similar to runCode but could have different validation
+          await runCode();
+        }
+
+        function resetCode() {
+          if (currentChallenge) {
+            updateStarterCode();
+          }
+          testResults.style.display = 'none';
+        }
+
+        function displayResults(result) {
+          if (result.error) {
+            resultsSummary.innerHTML = `<div class="error-result">Error: ${result.error}</div>`;
+          } else {
+            const percentage = Math.round(result.score);
+            const passed = result.passed_tests;
+            const total = result.total_tests;
+            
+            resultsSummary.innerHTML = `
+              <div class="score-display">
+                <div class="score-percentage">${percentage}%</div>
+                <div class="score-details">${passed}/${total} test cases passed</div>
+              </div>
+            `;
+            
+            // Display individual test cases
+            testCases.innerHTML = result.results.map(test => `
+              <div class="test-case ${test.status}">
+                <div class="test-header">
+                  <span class="test-name">${test.test_case}</span>
+                  <span class="test-status ${test.status}">${test.status}</span>
+                </div>
+                ${test.status === 'passed' ? `
+                  <div class="test-details">
+                    <div>Input: <code>${test.input}</code></div>
+                    <div>Expected: <code>${test.expected}</code></div>
+                    <div>Output: <code>${test.output}</code></div>
+                  </div>
+                ` : `
+                  <div class="test-error">${test.error || 'Test failed'}</div>
+                `}
+              </div>
+            `).join('');
+          }
+          
+          testResults.style.display = 'block';
+        }
+      });
+    </script>
+  </body>
+</html>
+

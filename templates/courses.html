@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Courses | LurnZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="app__header">
+        <div class="brand" role="banner" aria-label="LurnZo">
+          <div class="brand__logo" aria-hidden="true">🎓</div>
+          <div class="brand__text">
+            <h1 class="brand__title">LurnZo</h1>
+            <p class="brand__subtitle">AI-Powered Learning Platform</p>
+          </div>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/courses" class="nav-link active">Courses</a>
+          <a href="/coding" class="nav-link">Coding</a>
+          <a href="/resume" class="nav-link">Resume</a>
+          <a href="/interview" class="nav-link">Interview</a>
+          <a href="/profile" class="nav-link">Profile</a>
+        </nav>
+
+        <div class="toolbar" role="group" aria-label="Toolbar">
+          <button id="themeToggleBtn" class="btn btn--soft" title="Toggle theme" aria-label="Toggle theme">🌗</button>
+        </div>
+      </header>
+
+      <main class="courses-main">
+        <div class="courses-header">
+          <h1>Explore Courses</h1>
+          <p>Master new skills with our curated collection of courses</p>
+        </div>
+
+        <div class="courses-filters">
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search courses..." class="search-input">
+            <button class="search-btn">🔍</button>
+          </div>
+
+          <div class="filter-controls">
+            <select id="categoryFilter" class="filter-select">
+              <option value="">All Categories</option>
+              <option value="Programming">Programming</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Machine Learning">Machine Learning</option>
+              <option value="Career">Career</option>
+            </select>
+
+            <select id="difficultyFilter" class="filter-select">
+              <option value="">All Levels</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+
+            <select id="priceFilter" class="filter-select">
+              <option value="">All Prices</option>
+              <option value="free">Free</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="courses-grid" id="coursesGrid">
+          <!-- Courses will be loaded here dynamically -->
+        </div>
+
+        <div class="courses-loading" id="coursesLoading" style="display: none;">
+          <div class="loading-spinner"></div>
+          <p>Loading courses...</p>
+        </div>
+
+        <div class="no-courses" id="noCourses" style="display: none;">
+          <div class="no-courses-icon">📚</div>
+          <h3>No courses found</h3>
+          <p>Try adjusting your filters or search terms</p>
+        </div>
+      </main>
+
+      <footer class="app__footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>LurnZo</h4>
+            <p>AI-powered learning platform for students</p>
+          </div>
+          <div class="footer-section">
+            <h4>Features</h4>
+            <ul>
+              <li><a href="/courses">Courses</a></li>
+              <li><a href="/coding">Coding Challenges</a></li>
+              <li><a href="/resume">Resume Analyzer</a></li>
+              <li><a href="/interview">Interview Prep</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <small>&copy; 2025 LurnZo. Made with ❤️ for students.</small>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Courses page functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const coursesGrid = document.getElementById('coursesGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const difficultyFilter = document.getElementById('difficultyFilter');
+        const priceFilter = document.getElementById('priceFilter');
+        const loading = document.getElementById('coursesLoading');
+        const noCourses = document.getElementById('noCourses');
+
+        let allCourses = [];
+        let filteredCourses = [];
+
+        // Load courses on page load
+        loadCourses();
+
+        // Event listeners for filters
+        searchInput.addEventListener('input', filterCourses);
+        categoryFilter.addEventListener('change', filterCourses);
+        difficultyFilter.addEventListener('change', filterCourses);
+        priceFilter.addEventListener('change', filterCourses);
+
+        async function loadCourses() {
+          try {
+            loading.style.display = 'block';
+            coursesGrid.innerHTML = '';
+            
+            const response = await fetch('/api/courses');
+            const courses = await response.json();
+            
+            allCourses = courses;
+            filteredCourses = courses;
+            
+            renderCourses(courses);
+          } catch (error) {
+            console.error('Error loading courses:', error);
+            coursesGrid.innerHTML = '<p class="error">Error loading courses. Please try again.</p>';
+          } finally {
+            loading.style.display = 'none';
+          }
+        }
+
+        function filterCourses() {
+          const searchTerm = searchInput.value.toLowerCase();
+          const category = categoryFilter.value;
+          const difficulty = difficultyFilter.value;
+          const price = priceFilter.value;
+
+          filteredCourses = allCourses.filter(course => {
+            const matchesSearch = course.title.toLowerCase().includes(searchTerm) ||
+                                course.description.toLowerCase().includes(searchTerm) ||
+                                course.instructor.toLowerCase().includes(searchTerm);
+            
+            const matchesCategory = !category || course.category === category;
+            const matchesDifficulty = !difficulty || course.difficulty === difficulty;
+            const matchesPrice = !price || 
+                               (price === 'free' && course.price === 0) ||
+                               (price === 'paid' && course.price > 0);
+
+            return matchesSearch && matchesCategory && matchesDifficulty && matchesPrice;
+          });
+
+          renderCourses(filteredCourses);
+        }
+
+        function renderCourses(courses) {
+          if (courses.length === 0) {
+            coursesGrid.style.display = 'none';
+            noCourses.style.display = 'block';
+            return;
+          }
+
+          coursesGrid.style.display = 'grid';
+          noCourses.style.display = 'none';
+
+          coursesGrid.innerHTML = courses.map(course => `
+            <div class="course-card">
+              <div class="course-image">
+                <div class="course-category">${course.category}</div>
+                <div class="course-difficulty ${course.difficulty.toLowerCase()}">${course.difficulty}</div>
+              </div>
+              
+              <div class="course-content">
+                <h3 class="course-title">${course.title}</h3>
+                <p class="course-description">${course.description}</p>
+                
+                <div class="course-meta">
+                  <span class="course-instructor">👤 ${course.instructor}</span>
+                  <span class="course-duration">⏱️ ${course.duration}h</span>
+                  <span class="course-lessons">📚 ${course.lesson_count} lessons</span>
+                </div>
+                
+                <div class="course-rating">
+                  <div class="stars">
+                    ${'⭐'.repeat(Math.floor(course.rating))}
+                    ${course.rating % 1 >= 0.5 ? '⭐' : ''}
+                  </div>
+                  <span class="rating-text">${course.rating} (${course.enrolled_students.toLocaleString()})</span>
+                </div>
+                
+                <div class="course-footer">
+                  <div class="course-price">
+                    ${course.price === 0 ? '<span class="free">Free</span>' : `$${course.price}`}
+                  </div>
+                  <button class="btn btn--primary course-enroll-btn" onclick="enrollCourse('${course.id}')">
+                    ${course.price === 0 ? 'Enroll Free' : 'Enroll Now'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Global function for course enrollment
+        window.enrollCourse = function(courseId) {
+          // In a real app, this would handle enrollment logic
+          alert(`Enrolling in course: ${courseId}`);
+        };
+      });
+    </script>
+  </body>
+</html>
+

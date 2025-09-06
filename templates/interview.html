@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interview Prep | LurnZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="app__header">
+        <div class="brand" role="banner" aria-label="LurnZo">
+          <div class="brand__logo" aria-hidden="true">🎓</div>
+          <div class="brand__text">
+            <h1 class="brand__title">LurnZo</h1>
+            <p class="brand__subtitle">AI-Powered Learning Platform</p>
+          </div>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/courses" class="nav-link">Courses</a>
+          <a href="/coding" class="nav-link">Coding</a>
+          <a href="/resume" class="nav-link">Resume</a>
+          <a href="/interview" class="nav-link active">Interview</a>
+          <a href="/profile" class="nav-link">Profile</a>
+        </nav>
+
+        <div class="toolbar" role="group" aria-label="Toolbar">
+          <button id="themeToggleBtn" class="btn btn--soft" title="Toggle theme" aria-label="Toggle theme">🌗</button>
+        </div>
+      </header>
+
+      <main class="interview-main">
+        <div class="interview-header">
+          <h1>Interview Preparation</h1>
+          <p>Practice technical interview questions and improve your problem-solving skills</p>
+        </div>
+
+        <div class="interview-container">
+          <div class="interview-sidebar">
+            <div class="categories-section">
+              <h3>Categories</h3>
+              <div class="categories-list" id="categoriesList">
+                <!-- Categories will be loaded here -->
+              </div>
+            </div>
+
+            <div class="difficulty-section">
+              <h3>Difficulty</h3>
+              <div class="difficulty-filters">
+                <label class="difficulty-option">
+                  <input type="radio" name="difficulty" value="all" checked>
+                  <span class="difficulty-label">All Levels</span>
+                </label>
+                <label class="difficulty-option">
+                  <input type="radio" name="difficulty" value="easy">
+                  <span class="difficulty-label">Easy</span>
+                </label>
+                <label class="difficulty-option">
+                  <input type="radio" name="difficulty" value="medium">
+                  <span class="difficulty-label">Medium</span>
+                </label>
+                <label class="difficulty-option">
+                  <input type="radio" name="difficulty" value="hard">
+                  <span class="difficulty-label">Hard</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="practice-actions">
+              <button id="startPracticeBtn" class="btn btn--primary">Start Practice Session</button>
+              <button id="randomQuestionBtn" class="btn btn--outline">Random Question</button>
+            </div>
+          </div>
+
+          <div class="interview-workspace">
+            <div class="question-display" id="questionDisplay">
+              <div class="welcome-message">
+                <div class="welcome-icon">🎯</div>
+                <h2>Welcome to Interview Prep!</h2>
+                <p>Select a category and difficulty level to start practicing technical interview questions.</p>
+                <div class="quick-stats">
+                  <div class="stat-item">
+                    <span class="stat-number">100+</span>
+                    <span class="stat-label">Questions</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Categories</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Difficulty Levels</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="practice-session" id="practiceSession" style="display: none;">
+              <div class="session-header">
+                <div class="session-info">
+                  <h3 id="sessionTitle">Practice Session</h3>
+                  <div class="session-meta">
+                    <span class="question-counter" id="questionCounter">Question 1 of 5</span>
+                    <span class="category-badge" id="sessionCategory">Data Structures</span>
+                  </div>
+                </div>
+                
+                <div class="session-controls">
+                  <button id="showHintBtn" class="btn btn--soft">💡 Hint</button>
+                  <button id="showAnswerBtn" class="btn btn--outline">👁️ Show Answer</button>
+                  <button id="nextQuestionBtn" class="btn btn--primary">Next Question →</button>
+                </div>
+              </div>
+
+              <div class="question-content">
+                <div class="question-text" id="questionText">
+                  <!-- Question text will be displayed here -->
+                </div>
+
+                <div class="question-hint" id="questionHint" style="display: none;">
+                  <h4>💡 Hint</h4>
+                  <p id="hintText"></p>
+                </div>
+
+                <div class="question-answer" id="questionAnswer" style="display: none;">
+                  <h4>✅ Answer</h4>
+                  <p id="answerText"></p>
+                  <div class="related-topics">
+                    <h5>Related Topics:</h5>
+                    <div class="topic-tags" id="topicTags">
+                      <!-- Related topics will be displayed here -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="session-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0% Complete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app__footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>LurnZo</h4>
+            <p>AI-powered learning platform for students</p>
+          </div>
+          <div class="footer-section">
+            <h4>Features</h4>
+            <ul>
+              <li><a href="/courses">Courses</a></li>
+              <li><a href="/coding">Coding Challenges</a></li>
+              <li><a href="/resume">Resume Analyzer</a></li>
+              <li><a href="/interview">Interview Prep</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <small>&copy; 2025 LurnZo. Made with ❤️ for students.</small>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Interview prep functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const categoriesList = document.getElementById('categoriesList');
+        const difficultyFilters = document.querySelectorAll('input[name="difficulty"]');
+        const startPracticeBtn = document.getElementById('startPracticeBtn');
+        const randomQuestionBtn = document.getElementById('randomQuestionBtn');
+        const questionDisplay = document.getElementById('questionDisplay');
+        const practiceSession = document.getElementById('practiceSession');
+        const sessionTitle = document.getElementById('sessionTitle');
+        const questionCounter = document.getElementById('questionCounter');
+        const sessionCategory = document.getElementById('sessionCategory');
+        const questionText = document.getElementById('questionText');
+        const questionHint = document.getElementById('questionHint');
+        const questionAnswer = document.getElementById('questionAnswer');
+        const hintText = document.getElementById('hintText');
+        const answerText = document.getElementById('answerText');
+        const topicTags = document.getElementById('topicTags');
+        const showHintBtn = document.getElementById('showHintBtn');
+        const showAnswerBtn = document.getElementById('showAnswerBtn');
+        const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let selectedCategory = 'general';
+        let selectedDifficulty = 'all';
+
+        // Load categories on page load
+        loadCategories();
+
+        // Event listeners
+        startPracticeBtn.addEventListener('click', startPracticeSession);
+        randomQuestionBtn.addEventListener('click', showRandomQuestion);
+        showHintBtn.addEventListener('click', toggleHint);
+        showAnswerBtn.addEventListener('click', toggleAnswer);
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+
+        // Difficulty filter listeners
+        difficultyFilters.forEach(filter => {
+          filter.addEventListener('change', function() {
+            selectedDifficulty = this.value;
+          });
+        });
+
+        async function loadCategories() {
+          try {
+            const response = await fetch('/api/interview-questions');
+            const questions = await response.json();
+            
+            // Extract unique categories
+            const categories = [...new Set(questions.map(q => q.category))];
+            
+            categoriesList.innerHTML = categories.map(category => `
+              <div class="category-item" onclick="selectCategory('${category}')">
+                <div class="category-name">${category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</div>
+                <div class="category-count">${questions.filter(q => q.category === category).length} questions</div>
+              </div>
+            `).join('');
+            
+          } catch (error) {
+            console.error('Error loading categories:', error);
+            categoriesList.innerHTML = '<p class="error">Error loading categories. Please try again.</p>';
+          }
+        }
+
+        // Global function for category selection
+        window.selectCategory = function(category) {
+          selectedCategory = category;
+          
+          // Update active category in UI
+          document.querySelectorAll('.category-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          event.target.closest('.category-item').classList.add('active');
+        };
+
+        async function startPracticeSession() {
+          try {
+            const response = await fetch(`/api/interview-questions?subject=${selectedCategory}`);
+            const questions = await response.json();
+            
+            // Filter by difficulty if not "all"
+            if (selectedDifficulty !== 'all') {
+              currentQuestions = questions.filter(q => q.difficulty === selectedDifficulty);
+            } else {
+              currentQuestions = questions;
+            }
+            
+            if (currentQuestions.length === 0) {
+              alert('No questions found for the selected category and difficulty. Try different settings.');
+              return;
+            }
+            
+            // Shuffle questions
+            currentQuestions = currentQuestions.sort(() => Math.random() - 0.5).slice(0, 5);
+            currentQuestionIndex = 0;
+            
+            // Start session
+            showPracticeSession();
+            showCurrentQuestion();
+            
+          } catch (error) {
+            console.error('Error starting practice session:', error);
+            alert('Error starting practice session. Please try again.');
+          }
+        }
+
+        async function showRandomQuestion() {
+          try {
+            const response = await fetch(`/api/interview-questions?subject=${selectedCategory}`);
+            const questions = await response.json();
+            
+            if (questions.length === 0) {
+              alert('No questions found for the selected category.');
+              return;
+            }
+            
+            const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+            showSingleQuestion(randomQuestion);
+            
+          } catch (error) {
+            console.error('Error loading random question:', error);
+            alert('Error loading random question. Please try again.');
+          }
+        }
+
+        function showPracticeSession() {
+          questionDisplay.style.display = 'none';
+          practiceSession.style.display = 'block';
+          
+          // Reset UI state
+          questionHint.style.display = 'none';
+          questionAnswer.style.display = 'none';
+          showHintBtn.textContent = '💡 Hint';
+          showAnswerBtn.textContent = '👁️ Show Answer';
+        }
+
+        function showCurrentQuestion() {
+          if (currentQuestionIndex >= currentQuestions.length) {
+            // Session complete
+            showSessionComplete();
+            return;
+          }
+          
+          const question = currentQuestions[currentQuestionIndex];
+          showSingleQuestion(question);
+          
+          // Update progress
+          updateProgress();
+        }
+
+        function showSingleQuestion(question) {
+          questionText.innerHTML = `<p>${question.question}</p>`;
+          hintText.textContent = question.hints.join(' ');
+          answerText.innerHTML = `<p>${question.answer}</p>`;
+          
+          // Update topic tags
+          topicTags.innerHTML = question.related_topics.map(topic => 
+            `<span class="topic-tag">${topic}</span>`
+          ).join('');
+          
+          // Update session info
+          sessionTitle.textContent = question.category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+          sessionCategory.textContent = question.category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+          
+          // Reset hint and answer display
+          questionHint.style.display = 'none';
+          questionAnswer.style.display = 'none';
+          showHintBtn.textContent = '💡 Hint';
+          showAnswerBtn.textContent = '👁️ Show Answer';
+        }
+
+        function toggleHint() {
+          if (questionHint.style.display === 'none') {
+            questionHint.style.display = 'block';
+            showHintBtn.textContent = '🙈 Hide Hint';
+          } else {
+            questionHint.style.display = 'none';
+            showHintBtn.textContent = '💡 Hint';
+          }
+        }
+
+        function toggleAnswer() {
+          if (questionAnswer.style.display === 'none') {
+            questionAnswer.style.display = 'block';
+            showAnswerBtn.textContent = '🙈 Hide Answer';
+          } else {
+            questionAnswer.style.display = 'none';
+            showAnswerBtn.textContent = '👁️ Show Answer';
+          }
+        }
+
+        function nextQuestion() {
+          currentQuestionIndex++;
+          showCurrentQuestion();
+        }
+
+        function updateProgress() {
+          const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+          progressFill.style.width = `${progress}%`;
+          progressText.textContent = `${Math.round(progress)}% Complete`;
+          questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+        }
+
+        function showSessionComplete() {
+          practiceSession.innerHTML = `
+            <div class="session-complete">
+              <div class="complete-icon">🎉</div>
+              <h2>Practice Session Complete!</h2>
+              <p>Great job! You've completed all the questions in this session.</p>
+              <div class="session-actions">
+                <button onclick="location.reload()" class="btn btn--primary">Start New Session</button>
+                <button onclick="window.history.back()" class="btn btn--outline">Go Back</button>
+              </div>
+            </div>
+          `;
+        }
+      });
+    </script>
+  </body>
+</html>
+

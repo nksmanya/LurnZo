@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profile | LurnZo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="app__header">
+        <div class="brand" role="banner" aria-label="LurnZo">
+          <div class="brand__logo" aria-hidden="true">🎓</div>
+          <div class="brand__text">
+            <h1 class="brand__title">LurnZo</h1>
+            <p class="brand__subtitle">AI-Powered Learning Platform</p>
+          </div>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/courses" class="nav-link">Courses</a>
+          <a href="/coding" class="nav-link">Coding</a>
+          <a href="/resume" class="nav-link">Resume</a>
+          <a href="/interview" class="nav-link">Interview</a>
+          <a href="/profile" class="nav-link active">Profile</a>
+        </nav>
+
+        <div class="toolbar" role="group" aria-label="Toolbar">
+          <button id="themeToggleBtn" class="btn btn--soft" title="Toggle theme" aria-label="Toggle theme">🌗</button>
+        </div>
+      </header>
+
+      <main class="profile-main">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <div class="avatar-circle">👤</div>
+          </div>
+          <div class="profile-info">
+            <h1>Student Profile</h1>
+            <p>Track your learning progress and achievements</p>
+          </div>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-content">
+              <div class="stat-number" id="currentLevel">1</div>
+              <div class="stat-label">Current Level</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-content">
+              <div class="stat-number" id="totalPoints">0</div>
+              <div class="stat-label">Total Points</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-content">
+              <div class="stat-number" id="completedLessons">0</div>
+              <div class="stat-label">Lessons Completed</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-content">
+              <div class="stat-number" id="streakDays">0</div>
+              <div class="stat-label">Day Streak</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-content">
+          <div class="level-progress-section">
+            <h2>Level Progress</h2>
+            <div class="level-progress">
+              <div class="level-info">
+                <span class="level-text">Level <span id="levelNumber">1</span></span>
+                <span class="exp-text"><span id="currentExp">0</span> / <span id="nextLevelExp">100</span> XP</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="levelProgressFill"></div>
+              </div>
+              <div class="progress-percentage" id="progressPercentage">0%</div>
+            </div>
+          </div>
+
+          <div class="achievements-section">
+            <h2>Achievements</h2>
+            <div class="achievements-grid" id="achievementsGrid">
+              <!-- Achievements will be loaded here -->
+            </div>
+          </div>
+
+          <div class="learning-activity">
+            <h2>Recent Learning Activity</h2>
+            <div class="activity-timeline" id="activityTimeline">
+              <!-- Activity items will be loaded here -->
+            </div>
+          </div>
+
+          <div class="leaderboard-section">
+            <h2>Leaderboard</h2>
+            <div class="leaderboard" id="leaderboard">
+              <!-- Leaderboard will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app__footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>LurnZo</h4>
+            <p>AI-powered learning platform for students</p>
+          </div>
+          <div class="footer-section">
+            <h4>Features</h4>
+            <ul>
+              <li><a href="/courses">Courses</a></li>
+              <li><a href="/coding">Coding Challenges</a></li>
+              <li><a href="/resume">Resume Analyzer</a></li>
+              <li><a href="/interview">Interview Prep</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <small>&copy; 2025 LurnZo. Made with ❤️ for students.</small>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Profile page functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const currentLevel = document.getElementById('currentLevel');
+        const totalPoints = document.getElementById('totalPoints');
+        const completedLessons = document.getElementById('completedLessons');
+        const streakDays = document.getElementById('streakDays');
+        const levelNumber = document.getElementById('levelNumber');
+        const currentExp = document.getElementById('currentExp');
+        const nextLevelExp = document.getElementById('nextLevelExp');
+        const levelProgressFill = document.getElementById('levelProgressFill');
+        const progressPercentage = document.getElementById('progressPercentage');
+        const achievementsGrid = document.getElementById('achievementsGrid');
+        const activityTimeline = document.getElementById('activityTimeline');
+        const leaderboard = document.getElementById('leaderboard');
+
+        // Load user progress on page load
+        loadUserProgress();
+        loadAchievements();
+        loadLeaderboard();
+
+        async function loadUserProgress() {
+          try {
+            const response = await fetch('/api/user-progress');
+            const progress = await response.json();
+            
+            // Update stats
+            currentLevel.textContent = progress.level;
+            totalPoints.textContent = progress.total_points;
+            completedLessons.textContent = progress.completed_lessons;
+            streakDays.textContent = progress.streak_days;
+            
+            // Update level progress
+            levelNumber.textContent = progress.level;
+            currentExp.textContent = progress.experience;
+            nextLevelExp.textContent = progress.next_level_exp;
+            
+            const progressPercent = progress.progress_percentage;
+            levelProgressFill.style.width = `${progressPercent}%`;
+            progressPercentage.textContent = `${Math.round(progressPercent)}%`;
+            
+          } catch (error) {
+            console.error('Error loading user progress:', error);
+          }
+        }
+
+        function loadAchievements() {
+          const achievements = [
+            {
+              id: 'first_lesson',
+              name: 'First Steps',
+              description: 'Complete your first lesson',
+              icon: '🎯',
+              points: 50,
+              unlocked: true
+            },
+            {
+              id: 'streak_3',
+              name: 'On Fire',
+              description: 'Maintain a 3-day learning streak',
+              icon: '🔥',
+              points: 100,
+              unlocked: true
+            },
+            {
+              id: 'streak_7',
+              name: 'Unstoppable',
+              description: 'Maintain a 7-day learning streak',
+              icon: '⚡',
+              points: 200,
+              unlocked: false
+            },
+            {
+              id: 'perfect_score',
+              name: 'Perfectionist',
+              description: 'Get 100% on any lesson',
+              icon: '🏆',
+              points: 150,
+              unlocked: false
+            },
+            {
+              id: 'course_complete',
+              name: 'Course Master',
+              description: 'Complete an entire course',
+              icon: '🎓',
+              points: 500,
+              unlocked: false
+            },
+            {
+              id: 'helpful_peer',
+              name: 'Helper',
+              description: 'Help 5 other students',
+              icon: '🤝',
+              points: 100,
+              unlocked: false
+            }
+          ];
+
+          achievementsGrid.innerHTML = achievements.map(achievement => `
+            <div class="achievement-card ${achievement.unlocked ? 'unlocked' : 'locked'}">
+              <div class="achievement-icon">${achievement.icon}</div>
+              <div class="achievement-content">
+                <h3 class="achievement-name">${achievement.name}</h3>
+                <p class="achievement-description">${achievement.description}</p>
+                <div class="achievement-points">+${achievement.points} points</div>
+              </div>
+              <div class="achievement-status">
+                ${achievement.unlocked ? '✅' : '🔒'}
+              </div>
+            </div>
+          `).join('');
+        }
+
+        function loadLeaderboard() {
+          // Mock leaderboard data - in real app, this would come from the API
+          const leaderboardData = [
+            { rank: 1, username: 'CodeMaster', level: 15, points: 2500, lessons: 45 },
+            { rank: 2, username: 'DataWizard', level: 12, points: 2100, lessons: 38 },
+            { rank: 3, username: 'WebDevPro', level: 10, points: 1800, lessons: 32 },
+            { rank: 4, username: 'Pythonista', level: 8, points: 1500, lessons: 28 },
+            { rank: 5, username: 'AlgorithmGuru', level: 7, points: 1200, lessons: 25 }
+          ];
+
+          leaderboard.innerHTML = leaderboardData.map(entry => `
+            <div class="leaderboard-entry ${entry.rank <= 3 ? 'top-3' : ''}">
+              <div class="rank">${entry.rank}</div>
+              <div class="user-info">
+                <div class="username">${entry.username}</div>
+                <div class="user-stats">Level ${entry.level} • ${entry.lessons} lessons</div>
+              </div>
+              <div class="points">${entry.points} pts</div>
+            </div>
+          `).join('');
+        }
+
+        // Mock activity timeline
+        const mockActivities = [
+          {
+            type: 'lesson_completed',
+            title: 'Completed Python Basics Lesson 3',
+            description: 'Learned about control flow and functions',
+            time: '2 hours ago',
+            icon: '✅'
+          },
+          {
+            type: 'achievement_earned',
+            title: 'Earned "First Steps" Achievement',
+            description: 'Completed your first lesson',
+            time: '1 day ago',
+            icon: '🎯'
+          },
+          {
+            type: 'course_enrolled',
+            title: 'Enrolled in Data Science Course',
+            description: 'Started learning data analysis fundamentals',
+            time: '3 days ago',
+            icon: '📚'
+          },
+          {
+            type: 'coding_challenge',
+            title: 'Solved "Reverse String" Challenge',
+            description: 'Completed coding challenge with 100% score',
+            time: '1 week ago',
+            icon: '💻'
+          }
+        ];
+
+        activityTimeline.innerHTML = mockActivities.map(activity => `
+          <div class="activity-item ${activity.type}">
+            <div class="activity-icon">${activity.icon}</div>
+            <div class="activity-content">
+              <h4 class="activity-title">${activity.title}</h4>
+              <p class="activity-description">${activity.description}</p>
+              <span class="activity-time">${activity.time}</span>
+            </div>
+          </div>
+        `).join('');
+      });
+    </script>
+  </body>
+</html>
+
